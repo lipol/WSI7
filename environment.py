@@ -10,7 +10,7 @@ UP = 3
 
 class Environment:
 
-    def __init__(self, fileName):
+    def __init__(self, fileName, is_slippery=True, slip_prob=0.25):
         self.lake = np.array(self.loadEnvironment(fileName))
         # Environment dimensions
         self.actions = 4  # left, down, right, up
@@ -25,6 +25,8 @@ class Environment:
         self.done = False
         # Terminal view initialization
         self.view = None
+        self.is_slippery = is_slippery
+        self.slip_prob = slip_prob
 
     def reset(self):
         self.pos = np.argwhere(self.lake == 'S')[0]
@@ -58,6 +60,11 @@ class Environment:
         return action
 
     def step(self, action):
+        if self.is_slippery:
+            slip_treshold = random.uniform(0, 1)
+            if slip_treshold < self.slip_prob:
+                action = self.sampleAction()
+
         if action == LEFT:
             self.pos[1] = max(self.pos[1] - 1, 0)
         elif action == DOWN:

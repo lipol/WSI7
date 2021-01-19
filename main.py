@@ -62,7 +62,7 @@ for episode in range(1, num_episodes + 1):
 
 # Vizualization
 env.initCurses()
-num_episodes = 2
+num_episodes = 5
 for episode in range(1, num_episodes + 1):
     state = env.reset()
     done = False
